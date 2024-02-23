@@ -50,14 +50,14 @@ def delete_posts(driver,
             while True:
                 try:
                     try:
-                        timeline_element = driver.find_element_by_xpath("//div[@data-sigil='story-popup-causal-init']/a")
+                        timeline_element = driver.find_element("xpath", "//div[@data-sigil='story-popup-causal-init']/a")
                     except SELENIUM_EXCEPTIONS:
                         print("Could not find any posts")
                         finished = True
                         break
 
-                    post_content_element = driver.find_element_by_xpath("//article/div[@class='story_body_container']/div")
-                    post_content_ts = driver.find_element_by_xpath(timestamp_exp)
+                    post_content_element = driver.find_element("xpath", "//article/div[@class='story_body_container']/div")
+                    post_content_ts = driver.find_element("xpath", timestamp_exp)
 
                     if not (post_content_element or post_content_ts):
                         break
@@ -82,7 +82,7 @@ def delete_posts(driver,
                     # Delete -> Untag -> Hide
                     for button_type in button_types:
                         try:
-                            delete_button = driver.find_element_by_xpath("//*[text()='{0}']".format(button_type))
+                            delete_button = driver.find_element("xpath", "//*[text()='{0}']".format(button_type))
                             if not delete_button.is_displayed():
                                 continue
                             break
@@ -96,7 +96,7 @@ def delete_posts(driver,
 
                     click_button(driver, delete_button)
                     wait_xpath(driver, confirmation_button_exp)
-                    confirmation_button = driver.find_element_by_xpath(confirmation_button_exp)
+                    confirmation_button = driver.find_element("xpath", confirmation_button_exp)
 
                     print(confirmation_button)
                     click_button(driver, confirmation_button)

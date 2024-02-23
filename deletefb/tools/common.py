@@ -30,7 +30,7 @@ def scroll_until_element_exists(driver, xpath_expr):
     while True:
         driver.execute_script("window.scrollTo(0, document.body.scrollHeight)")
         try:
-            element = driver.find_element_by_xpath(xpath_expr)
+            element = driver.find_element("xpath", xpath_expr)
         except SELENIUM_EXCEPTIONS:
             continue
         break

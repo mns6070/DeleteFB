@@ -31,8 +31,8 @@ def get_conversations(driver):
 
             if url and "messages/read" in url:
                 try:
-                    date = convo.find_element_by_xpath("../../..//abbr").text
-                    conversation_name = convo.find_element_by_xpath("../../../div/div/header/h3").text.strip()
+                    date = convo.find_element("xpath", "../../..//abbr").text
+                    conversation_name = convo.find_element("xpath", "../../../div/div/header/h3").text.strip()
                     assert(conversation_name)
                     assert(url)
                 except (SELENIUM_EXCEPTIONS + (AssertionError,)):
@@ -47,8 +47,8 @@ def get_conversations(driver):
                 )
 
         try:
-            next_url = (driver.find_element_by_id("see_older_threads").
-                        find_element_by_xpath("a").
+            next_url = (driver.find_element("id", "see_older_threads").
+                        find_element("xpath", "a").
                         get_attribute("href"))
 
             print("next_url", next_url)
@@ -97,7 +97,7 @@ def get_convo(driver, convo):
     # Expand conversation until we've reached the beginning
     while True:
         try:
-            see_older = driver.find_element_by_xpath("//*[contains(text(), 'See Older Messages')]")
+            see_older = driver.find_element("xpath", "//*[contains(text(), 'See Older Messages')]")
         except SELENIUM_EXCEPTIONS:
             break
 
@@ -120,7 +120,7 @@ def delete_conversation(driver, convo):
 
     actions = ActionChains(driver)
 
-    menu_select = Select(driver.find_element_by_xpath("//select/option[contains(text(), 'Delete')]/.."))
+    menu_select = Select(driver.find_element("xpath", "//select/option[contains(text(), 'Delete')]/.."))
 
     for i, option in enumerate(menu_select.options):
         if option.text.strip() == "Delete":
@@ -128,7 +128,7 @@ def delete_conversation(driver, convo):
             break
 
     wait_xpath(driver, "//h2[contains(text(), 'Delete conversation')]")
-    delete_button = driver.find_element_by_xpath("//a[contains(text(), 'Delete')][@role='button']")
+    delete_button = driver.find_element("xpath", "//a[contains(text(), 'Delete')][@role='button']")
     actions.move_to_element(delete_button).click().perform()
 
     return

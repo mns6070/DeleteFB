@@ -26,13 +26,13 @@ def load_likes(driver, profile_url):
 
     scroll_until_element_exists(driver, "//div[text()='Likes']")
 
-    likes_link_el = driver.find_element_by_xpath(likes_link_xpath)
+    likes_link_el = driver.find_element("xpath", likes_link_xpath)
 
     driver.get(likes_link_el.get_attribute("href"))
 
     wait_xpath(driver, all_likes_link_xpath)
 
-    all_likes_link_el = driver.find_element_by_xpath(all_likes_link_xpath)
+    all_likes_link_el = driver.find_element("xpath", all_likes_link_xpath)
 
     all_likes_link = all_likes_link_el.get_attribute("href")
 
@@ -77,14 +77,14 @@ def unlike_page(driver, url, archive=None):
         # Something went wrong with this page, so skip it
         return
 
-    driver.find_element_by_xpath("//*[text()='Liked']/../../../..").click()
+    driver.find_element("xpath", "//*[text()='Liked']/../../../..").click()
 
     wait.until(
         EC.presence_of_element_located((By.XPATH, "//*[text()='Unlike']"))
     )
 
     # There should be an "Unlike" button now, click it
-    driver.find_element_by_xpath("//*[text()='Unlike']/..").click()
+    driver.find_element("xpath", "//*[text()='Unlike']/..").click()
 
     if archive:
         archive(Page(name=url))

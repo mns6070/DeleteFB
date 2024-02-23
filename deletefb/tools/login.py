@@ -52,17 +52,17 @@ def login(user_email_address,
         login_button = "loginbutton"
         approvals_code = "approvals_code"
 
-        driver.find_element_by_name(email).send_keys(user_email_address)
-        driver.find_element_by_name(password).send_keys(user_password)
-        driver.find_element_by_id(login_button).click()
+        driver.find_element("name", email).send_keys(user_email_address)
+        driver.find_element("name", password).send_keys(user_password)
+        driver.find_element("id", login_button).click()
 
         # Defaults to no 2fa
         has_2fa = False
 
         try:
             # If this element exists, we've reached a 2FA page
-            driver.find_element_by_xpath("//form[@class=\"checkpoint\"]")
-            driver.find_element_by_xpath("//input[@name=\"approvals_code\"]")
+            driver.find_element("xpath", "//form[@class=\"checkpoint\"]")
+            driver.find_element("xpath", "//input[@name=\"approvals_code\"]")
             has_2fa = True
         except NoSuchElementException:
             has_2fa = "two-factor authentication" in driver.page_source.lower() or has_2fa
@@ -74,15 +74,15 @@ def login(user_email_address,
             """)
 
         if two_factor_token and has_2fa:
-            twofactorelement = driver.find_element_by_name(approvals_code)
+            twofactorelement = driver.find_element("name", approvals_code)
             twofactorelement.send_keys(two_factor_token)
 
             # Submits after the code is passed into the form, does not validate 2FA code.
-            contelement = driver.find_element_by_id("checkpointSubmitButton")
+            contelement = driver.find_element("id", "checkpointSubmitButton")
             contelement.click()
 
             # Defaults to saving this new browser, this occurs on each new automated login.
-            save_browser = driver.find_element_by_id("checkpointSubmitButton")
+            save_browser = driver.find_element("id", "checkpointSubmitButton")
             save_browser.click()
         elif has_2fa:
             # Allow time to enter 2FA code
